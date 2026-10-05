@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.env
+.pytest_cache/
+*.db
+*.sqlite3
+
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# GIS / Large Datasets Cache / Temporary Outputs
+*.npy
+*.nc
+*.geotiff
+*.tiff
+outputs/temp_*
+runs/*/
+
+# IDE & System
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Scratch & Temporary Update Files
+apply_update.py
+update_konta.py
+useStore_snippets.json
+all_scenarios_geojson.json
+konta_exact_geojson.json
+machhu_exact_geojson.json
+machhu_geojson.json

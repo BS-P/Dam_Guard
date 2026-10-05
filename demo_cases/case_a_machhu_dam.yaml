@@ -1,0 +1,137 @@
+# BREACHSCOPE Demo Case A — Machhu Dam-II Failure (Morbi, Gujarat, 1979)
+#
+# This is a DEMONSTRATION scenario built from publicly available data.
+# LABEL: DEMO DATA — Sample scenario, not a validated forecast.
+#
+# Historical Event:
+#   On August 11, 1979, the Machhu Dam-II (also known as Machchhu-2) failed
+#   due to overtopping from unprecedented rainfall and floods. The resulting
+#   flood wave devastated the downstream town of Morbi, Gujarat, India.
+#   Estimated death toll: 1,800–25,000 (sources vary widely).
+#
+# References:
+#   1. Dhar, O.N. & Nandargi, S.S. (2003). "Hydrometeorological Aspects of
+#      Floods in India." Natural Hazards, 28, 223-236.
+#   2. Central Water Commission (CWC), India. Dam Rehabilitation and
+#      Improvement Project (DRIP) database.
+#   3. Wikipedia: "1979 Machchhu dam failure"
+#   4. Jain, S.K., Singh, P., Seth, S.M. (2002). "Dam Break Flood Estimation."
+#      NIH Roorkee.
+
+case_name: "Machhu Dam-II Failure (1979)"
+case_id: "machhu_ii_1979"
+case_type: "dam_break"
+label: "DEMO DATA — Sample scenario, not a validated forecast"
+
+location:
+  name: "Machhu Dam-II, Morbi, Gujarat, India"
+  latitude: 22.8384
+  longitude: 70.8303
+  downstream_town: "Morbi"
+  downstream_lat: 22.8173
+  downstream_lon: 70.8370
+  river: "Machhu River"
+  state: "Gujarat"
+  country: "India"
+
+aoi:
+  # Area of Interest bounding box (EPSG:4326)
+  west: 70.70
+  south: 22.70
+  east: 70.95
+  north: 22.90
+
+dam:
+  name: "Machhu Dam-II"
+  type: "earthfill"
+  height_m: 22.56
+  crest_length_m: 3810
+  crest_elevation_m: 102.11  # meters above mean sea level
+  spillway_capacity_m3s: 5663
+  source_citation: "CWC DRIP database; Jain et al. (2002)"
+  notes: "Dam was designed for estimated PMF of 14,160 m³/s; actual flood exceeded design"
+
+reservoir:
+  volume_m3: 101.0e6  # 101 MCM (million cubic meters)
+  area_m2: 17.4e6  # 17.4 km²
+  normal_pool_elevation_m: 100.0
+  water_level_at_failure_m: 102.11  # Overtopped
+  source_citation: "CWC DRIP database"
+  # Stage-storage curve (approximate, from dam geometry)
+  # [elevation_m, volume_m3, area_m2]
+  stage_storage:
+    - [80.0, 0.0, 0.0]
+    - [85.0, 5.0e6, 2.0e6]
+    - [90.0, 20.0e6, 5.0e6]
+    - [95.0, 50.0e6, 10.0e6]
+    - [100.0, 85.0e6, 15.0e6]
+    - [101.0, 95.0e6, 16.5e6]
+    - [102.11, 101.0e6, 17.4e6]
+  is_assumed:
+    stage_storage: true
+    rationale: "Approximate curve derived from total volume and area; detailed survey data not publicly available"
+
+breach:
+  mode: "overtopping"
+  estimated_peak_inflow_m3s: 16307
+  estimated_inflow_source: "Estimated from rainfall-runoff analysis (Dhar & Nandargi 2003)"
+  is_assumed:
+    peak_inflow: true
+    rationale: "Various sources report different estimates; this is the commonly cited value"
+
+hydrology:
+  design_flood_m3s: 14160
+  actual_flood_m3s: 16307
+  rainfall_event: "Unprecedented rainfall: ~500mm in 24 hours upstream"
+  source_citation: "Dhar & Nandargi (2003)"
+
+dem:
+  source: "Copernicus GLO-30"
+  resolution_m: 30
+  crs: "EPSG:4326"
+  license: "Copernicus Open Access"
+
+satellite_imagery:
+  # No satellite imagery available for 1979 event
+  available: false
+  notes: "Event predates satellite-based flood mapping"
+
+validation:
+  observed_flood_extent: false
+  observed_peak_discharge: true
+  observed_peak_m3s: 16307
+  observed_flood_arrival_morbi:
+    estimated_time_hours: 1.5
+    source: "Local reports (approximate)"
+    is_assumed: true
+  notes: "Limited validation data available for 1979 event. Death toll estimates vary from ~1,800 to 25,000."
+
+scenarios:
+  - name: "Historical overtopping failure"
+    breach_method: "froehlich"
+    breach_mode: "overtopping"
+    initial_water_level_m: 102.11
+    manning_n_default: 0.035
+    notes: "Froehlich (2008) parametric breach with overtopping mode"
+  
+  - name: "Sudden failure (worst case)"
+    breach_method: "user_defined"
+    breach_mode: "sudden"
+    initial_water_level_m: 102.11
+    breach_width_m: 200.0
+    breach_depth_m: 22.56
+    manning_n_default: 0.035
+    notes: "Hypothetical instantaneous failure for comparison"
+
+solver_tiers:
+  - "T1_VPMM"
+  - "T1_DIFFWAVE"
+  # T2 and T3 if available
+
+disclaimer: |
+  This demo case uses publicly available information about the 1979 Machhu Dam-II failure.
+  Dam parameters, reservoir data, and flood estimates are sourced from published literature.
+  Some values are approximate or assumed where detailed survey data is not publicly available.
+  This scenario is provided for DEMONSTRATION and EDUCATIONAL purposes only.
+  It is NOT a validated reconstruction of the actual event.
+  Results should NOT be used for any real emergency planning or decision-making.

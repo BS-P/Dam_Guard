@@ -1,0 +1,140 @@
+# BREACHSCOPE Demo Case B — Rishiganga Valley Flood (Uttarakhand, 2021)
+#
+# LABEL: DEMO DATA — Sample scenario, not a validated forecast.
+#
+# Historical Event:
+#   On February 7, 2021, a massive rock-ice avalanche from Ronti Peak
+#   (7,145 m) triggered a debris flow and flash flood in the Rishiganga
+#   and Dhauliganga valleys, Chamoli district, Uttarakhand, India.
+#   The debris temporarily dammed the river before catastrophic release.
+#   Two hydropower projects (NTPC Tapovan-Vishnugad and Rishi Ganga HEP)
+#   were severely damaged. Over 200 people killed/missing.
+#
+# References:
+#   1. Shugar, D.H. et al. (2021). "A massive rock and ice avalanche
+#      caused the 2021 disaster at Chamoli, Indian Himalaya." Science, 373(6552).
+#   2. Meena, S.R. et al. (2021). "Rapid assessment of the 2021 flood in
+#      Chamoli, India." Remote Sensing.
+#   3. ISRO/NRSC Disaster Management Support reports, Feb 2021.
+#   4. CWC Flood Forecasting reports.
+
+case_name: "Rishiganga Valley Flood (2021)"
+case_id: "rishiganga_2021"
+case_type: "blockage_release"
+label: "DEMO DATA — Sample scenario, not a validated forecast"
+
+location:
+  name: "Rishiganga Valley, Chamoli, Uttarakhand, India"
+  latitude: 30.4000
+  longitude: 79.7300
+  river: "Rishiganga / Dhauliganga"
+  state: "Uttarakhand"
+  country: "India"
+  avalanche_source:
+    name: "Ronti Peak"
+    lat: 30.3850
+    lon: 79.7250
+    elevation_m: 5600  # Approximate detachment zone
+    source_citation: "Shugar et al. (2021), Science"
+
+aoi:
+  west: 79.55
+  south: 30.30
+  east: 79.85
+  north: 30.50
+
+blockage:
+  type: "rock_ice_avalanche_dam"
+  estimated_volume_m3: 27.0e6  # Debris volume from Shugar et al.
+  blockage_height_m: 60  # Approximate
+  blockage_crest_elevation_m: 2150  # Approximate
+  lake_volume_m3: 5.0e6  # Small lake formed briefly
+  lake_area_m2: 100000  # Approximate
+  lake_level_m: 2150
+  erosion_rate_m3_per_s: null  # Unknown - use empirical
+  source_citation: "Shugar et al. (2021), Science 373(6552)"
+  is_assumed:
+    blockage_height: true
+    lake_volume: true
+    rationale: "Exact blockage geometry not precisely measured; estimates from satellite analysis and published studies"
+
+hydrology:
+  event_type: "Glacial lake outburst / rock-ice avalanche flood"
+  estimated_peak_discharge_m3s: 15000  # Upper estimate from various sources
+  is_assumed:
+    peak_discharge: true
+    rationale: "Multiple estimates exist in literature; exact value uncertain"
+  source_citation: "Shugar et al. (2021)"
+
+dem:
+  source: "Copernicus GLO-30"
+  resolution_m: 30
+  crs: "EPSG:4326"
+  license: "Copernicus Open Access"
+  notes: "Pre-event DEM; terrain significantly altered by the event"
+
+satellite_imagery:
+  available: true
+  sentinel2:
+    pre_event_date: "2021-01-15"
+    post_event_dates:
+      - "2021-02-10"
+      - "2021-02-15"
+      - "2021-02-20"
+    notes: "Heavy cloud cover limited some acquisitions"
+  sentinel1:
+    pre_event_date: "2021-01-25"
+    post_event_dates:
+      - "2021-02-08"
+      - "2021-02-14"
+    notes: "SAR imagery available through cloud cover"
+  source_citation: "Copernicus Sentinel data 2021"
+
+validation:
+  observed_flood_extent: true
+  extent_source: "ISRO/NRSC and Sentinel-1 SAR analysis"
+  notes: "Flood extent can be validated against Sentinel-1 SAR imagery"
+
+scenarios:
+  - name: "Blockage release (progressive erosion)"
+    breach_mode: "blockage_release"
+    manning_n_default: 0.045  # Mountain valley
+    notes: "Progressive overtopping and erosion of rock-ice debris dam"
+
+  - name: "Sudden release (worst case)"
+    breach_mode: "sudden"
+    manning_n_default: 0.045
+    notes: "Hypothetical instantaneous failure of debris dam"
+
+solver_tiers:
+  - "T1_VPMM"
+  - "T1_DIFFWAVE"
+
+downstream_sites:
+  - name: "Raini Village"
+    lat: 30.4100
+    lon: 79.7200
+    distance_km: 3
+    notes: "Site of Rishi Ganga HEP; severely damaged"
+  
+  - name: "Tapovan"
+    lat: 30.4800
+    lon: 79.6500
+    distance_km: 15
+    notes: "Site of NTPC Tapovan-Vishnugad project; tunnel flooded"
+
+  - name: "Joshimath"
+    lat: 30.5570
+    lon: 79.5660
+    distance_km: 30
+    notes: "Major town downstream"
+
+disclaimer: |
+  This demo case uses publicly available information about the February 2021
+  Rishiganga valley flood event. Parameters are sourced from published
+  scientific literature (primarily Shugar et al. 2021, Science).
+  Many parameters are approximate due to the extreme terrain and
+  limited ground measurements. The pre-event DEM may not accurately
+  represent post-event terrain conditions.
+  This scenario is provided for DEMONSTRATION purposes only.
+  Results should NOT be used for emergency planning.
