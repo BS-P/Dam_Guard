@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     # Base paths
-    BASE_DIR: Path = Path("d:/SIH 2026/DamGuard")
+    BASE_DIR: Path = Path(__file__).resolve().parents[2]
     
     # Database
     DATABASE_URL: str = "sqlite+aiosqlite:///./breachscope.db"

@@ -129,6 +129,17 @@ npm run dev -- --port 5174
 ```
 Access the interactive GIS workstation at `http://localhost:5174`.
 
+### 4. Deploy to Vercel and Render
+
+The React frontend is configured for Vercel, while the FastAPI/GIS backend runs as a separate Render web service. The Render free service uses ephemeral storage: database contents, uploads, and generated outputs can be lost when the service restarts or redeploys.
+
+1. In Render, create a Blueprint from this GitHub repository and deploy the `damguard-api` service defined in `render.yaml`. Copy the service's public URL after it is live.
+2. In Vercel, import this GitHub repository. The root `vercel.json` installs and builds the frontend from `frontend/`.
+3. In Vercel's project settings, add `VITE_API_URL` for the Production, Preview, and Development environments. Set it to the Render URL followed by `/api`, for example `https://damguard-api.onrender.com/api`, then redeploy.
+4. Check the backend at `https://<your-render-service>.onrender.com/api/health` and open the Vercel deployment.
+
+The Render free service may sleep when idle, so the first API request after inactivity can take longer. Vercel hosts only the frontend; it does not run the simulation backend.
+
 ---
 
 ## 🔬 Running Demo & Verification Tests

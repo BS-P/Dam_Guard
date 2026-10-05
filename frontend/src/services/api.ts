@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Project, Dataset, Scenario, SimulationRun, Measurement, Annotation, SolverStatus, HealthStatus } from '../types';
 
-const API_BASE_URL = (import.meta as any).env?.VITE_API_URL || '/api';
+export const API_BASE_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/+$/, '');
 
 const api = axios.create({
   baseURL: API_BASE_URL,

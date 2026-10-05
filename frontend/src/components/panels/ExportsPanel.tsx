@@ -1,14 +1,15 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../services/api';
 
 export const ExportsPanel = () => {
   const [exporting, setExporting] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState('png');
   const [selectedMapType, setSelectedMapType] = useState('extent');
-  const [previewUrl, setPreviewUrl] = useState<string | null>('/api/maps/demo?type=extent');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(`${API_BASE_URL}/maps/demo?type=extent`);
 
   const handleGeneratePublicationMap = (mapType: string, format: string) => {
     setExporting(true);
-    const downloadUrl = `http://localhost:8000/api/maps/demo/download?type=${mapType}&format=${format}`;
+    const downloadUrl = `${API_BASE_URL}/maps/demo/download?type=${mapType}&format=${format}`;
     
     setTimeout(() => {
       setExporting(false);
@@ -28,7 +29,7 @@ export const ExportsPanel = () => {
             value={selectedMapType}
             onChange={(e) => {
               setSelectedMapType(e.target.value);
-              setPreviewUrl(`http://localhost:8000/api/maps/demo?type=${e.target.value}`);
+              setPreviewUrl(`${API_BASE_URL}/maps/demo?type=${e.target.value}`);
             }}
             className="w-full bg-slate-900 border border-slate-600 rounded p-2 text-sm text-white focus:border-cyan-500 font-medium"
           >
